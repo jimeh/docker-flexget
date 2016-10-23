@@ -9,7 +9,8 @@ ENV FLEXGET_VERSION 2.5.1
 
 # install everything
 ADD install.sh /
-RUN chmod +x /install.sh && /install.sh && rm /install.sh
+RUN chmod +x /install.sh
+RUN /install.sh
 
 # add init script
 ADD init.sh /
