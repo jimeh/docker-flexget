@@ -32,7 +32,7 @@ if [ -f /config/config.yml ]; then
   echo "[info] Using existing config file."
 else
   echo "[info] Creating config.yml from template."
-  cp /config.example.yml /config/config.yml
+  cp /templates/config.example.yml /config/config.yml
   if [ -n "$flex_user" ]; then
     chown "${flex_user}":"${flex_group}" /config/config.yml
   fi

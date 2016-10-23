@@ -7,17 +7,20 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 # define what version of flexget to install
 ENV FLEXGET_VERSION 2.5.1
 
+RUN mkdir /scripts
+
 # install everything
-ADD install.sh /install.sh
-RUN chmod +x /install.sh
-RUN /install.sh
+ADD install.sh /scripts/
+RUN chmod +x /scripts/install.sh
+RUN /scripts/install.sh
 
 # add init script
-ADD init.sh /init.sh
-RUN chmod +x /init.sh
+ADD init.sh /scripts/init.sh
+RUN chmod +x /scripts/init.sh
 
 # add default config file
-ADD config.example.yml /
+RUN mkdir /templates
+ADD config.example.yml /templates/
 
 # used to store flexget config files
 VOLUME /config
@@ -30,4 +33,4 @@ VOLUME /data
 EXPOSE 3539
 
 # init script sets uid, gid, permissions and launches flexget
-CMD ["/init.sh"]
+CMD ["/scripts/init.sh"]
