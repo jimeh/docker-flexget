@@ -8,12 +8,12 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 ENV FLEXGET_VERSION 2.5.1
 
 # install everything
-ADD install.sh /
+ADD install.sh /install.sh
 RUN chmod +x /install.sh
 RUN /install.sh
 
 # add init script
-ADD init.sh /
+ADD init.sh /init.sh
 RUN chmod +x /init.sh
 
 # add default config file
