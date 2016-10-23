@@ -1,22 +1,25 @@
 #! /usr/bin/env bash
+set -e
 
 cd /config || exit
 
 echo "[info] Setting permissions on files/folders inside container..."
 
-if [ -z "$(getent group "${PGID}")" ]; then
-  groupadd -g "${PGID}" flexget
+if [ -n "${PUID}" ] && [ -n "${PGID}" ]; then
+  if [ -z "$(getent group "${PGID}")" ]; then
+    groupadd -g "${PGID}" flexget
+  fi
+
+  if [ -z "$(getent passwd "${PUID}")" ]; then
+    useradd -u "${PUID}" -g "${PGID}" flexget
+  fi
+
+  flex_user=$(getent passwd "${PUID}" | cut -d: -f1)
+  flex_group=$(getent group "${PGID}" | cut -d: -f1)
+
+  chown -R "${flex_user}":"${flex_group}" /config
+  chmod -R 775 /config
 fi
-
-if [ -z "$(getent passwd "${PUID}")" ]; then
-  useradd -u "${PUID}" -g "${PGID}" flexget
-fi
-
-user=$(getent passwd "${PUID}" | cut -d: -f1)
-group=$(getent group "${PGID}" | cut -d: -f1)
-
-chown -R "${user}":"${group}" /config
-chmod -R 775 /config
 
 # Remove lockfile if exists
 if [ -f /config/.config-lock ]; then
@@ -30,7 +33,9 @@ if [ -f /config/config.yml ]; then
 else
   echo "[info] Creating config.yml from template."
   cp /config.example.yml /config/config.yml
-  chown "${user}":"${group}" /config/config.yml
+  if [ -n "$flex_user" ]; then
+    chown "${flex_user}":"${flex_group}" /config/config.yml
+  fi
 fi
 
 # if FLEXGET_WEBUI_PASSWORD not specified then use default:
@@ -47,4 +52,8 @@ fi
 flexget web passwd "${FLEXGET_WEBUI_PASSWORD}"
 
 echo "[info] Starting Flexget daemon..."
-exec su "${user}" -m -c 'flexget -c /config/config.yml daemon start'
+if [ -n "$flex_user" ]; then
+  exec su "${flex_user}" -m -c 'flexget -c /config/config.yml daemon start'
+else
+  exec flexget -c /config/config.yml daemon start
+fi
