@@ -5,7 +5,7 @@ RUN locale-gen en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 # define what version of flexget to install
-ENV FLEXGET_VERSION 2.5.0
+ENV FLEXGET_VERSION 2.5.1
 
 # install everything
 ADD install.sh /
