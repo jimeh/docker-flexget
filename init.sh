@@ -1,9 +1,18 @@
-#! /usr/bin/env bash
+#!/bin/sh
 set -e
 
+# Timezone setting
+if [ -n "${TZ}" ]; then
+  echo "[Init] Local timezone to ${TZ}"
+  echo "${TZ}" > /etc/timezone
+  apk add --no-cache tzdata
+  cp /usr/share/zoneinfo/"${TZ}" /etc/localtime
+fi
+
+# PUID and PGUID
 cd /config || exit
 
-echo "[info] Setting permissions on files/folders inside container..."
+echo "[Init] Setting permissions on files/folders inside container"
 
 if [ -n "${PUID}" ] && [ -n "${PGID}" ]; then
   if [ -z "$(getent group "${PGID}")" ]; then
@@ -23,37 +32,37 @@ fi
 
 # Remove lockfile if exists
 if [ -f /config/.config-lock ]; then
-  echo "[info] Lockfile found...removing"
+  echo "[Init] Removing lockfile"
   rm -f /config/.config-lock
 fi
 
 # Check if config.yml exists. If not, copy in
 if [ -f /config/config.yml ]; then
-  echo "[info] Using existing config file."
+  echo "[Init] Using existing config.yml"
 else
-  echo "[info] Creating config.yml from template."
+  echo "[Init] New config.yml from template"
   cp /templates/config.example.yml /config/config.yml
   if [ -n "$flex_user" ]; then
     chown "${flex_user}":"${flex_group}" /config/config.yml
   fi
 fi
+rm -rf /templates
 
-# if FLEXGET_WEBUI_PASSWORD not specified then use default:
-# FLEXGET_WEBUI_PASSWORD = flexpass
-if [[ -z "${FLEXGET_WEBUI_PASSWORD}" ]]; then
-  echo "[info] Using default Flexget-webui password of flexpass"
-  FLEXGET_WEBUI_PASSWORD="flexpass"
+# Set FG_WEBUI_PASSWD
+if [[ -z "${FG_WEBUI_PASSWD}" ]]; then
+  echo "[Init] Using default FG_WEBUI_PASSWD: flexpass"
+  FG_WEBUI_PASSWD="flexpass"
 else
-  echo "[info] Using userdefined Flexget-webui password of " \
-       "${FLEXGET_WEBUI_PASSWORD}"
+  echo "[Init] Using userdefined FG_WEBUI_PASSWD:" \
+  "${FG_WEBUI_PASSWD}"
 fi
+flexget web passwd "${FG_WEBUI_PASSWD}"
 
-# set webui password
-flexget web passwd "${FLEXGET_WEBUI_PASSWORD}"
-
-echo "[info] Starting Flexget daemon..."
+echo "[Init] Starting flexget daemon"
 if [ -n "$flex_user" ]; then
-  exec su "${flex_user}" -m -c 'flexget -c /config/config.yml daemon start'
+  exec su "${flex_user}" -m -c \
+  'flexget -c /config/config.yml --loglevel info daemon start'
 else
-  exec flexget -c /config/config.yml daemon start
+  exec flexget -c /config/config.yml --loglevel info daemon start
 fi
+

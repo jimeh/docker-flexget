@@ -1,36 +1,37 @@
-FROM ubuntu:16.04
-MAINTAINER jimeh
-
-RUN locale-gen en_US.UTF-8
-ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+FROM alpine:3.5
+MAINTAINER wiserain
 
 # define what version of flexget to install
-ENV FLEXGET_VERSION 2.5.1
+ENV FG_VERSION 2.8.14
 
+# install frolvlad/alpine-python3
+RUN apk add --no-cache python3 && \ 
+	python3 -m ensurepip && \ 
+	rm -r /usr/lib/python*/ensurepip && \ 
+	pip3 install --upgrade pip setuptools && \ 
+	rm -r /root/.cache
+
+# install flexget
+RUN apk --no-cache add ca-certificates && \ 
+	pip3 install --upgrade --force-reinstall --ignore-installed \
+		transmissionrpc python-telegram-bot "flexget==${FG_VERSION}" && \
+	rm -r /root/.cache
+
+# add init.sh
 RUN mkdir /scripts
-
-# install everything
-ADD install.sh /scripts/
-RUN chmod +x /scripts/install.sh
-RUN /scripts/install.sh
-
-# add init script
 ADD init.sh /scripts/init.sh
 RUN chmod +x /scripts/init.sh
 
-# add default config file
+# add default config.yml
 RUN mkdir /templates
 ADD config.example.yml /templates/
 
-# used to store flexget config files
-VOLUME /config
+# add default volumes
+VOLUME /config /data
 WORKDIR /config
 
-# use /data in your flexget config.yml file for input/output of files
-VOLUME /data
-
 # expose port for flexget webui
-EXPOSE 3539
+EXPOSE 3539 3539/tcp
 
-# init script sets uid, gid, permissions and launches flexget
+# run init.sh to set uid, gid, permissions and to launch flexget
 CMD ["/scripts/init.sh"]

@@ -1,12 +1,13 @@
-# jimeh/flexget
+# wiserain/docker-flexget
 
-Simple Docker container for running [Flexget](http://flexget.com/).
+docker container for running [flexget](http://flexget.com/).
 
-Some features:
+container environment:
 
-- `convert_magnet` plugin works without missing libtorrent or boost errors.
-- `deluge` plugin works.
-- `transmission` plugin should work (untested).
+- lightweight alpine linux
+- python3
+- transmissionrpc, python-telegram-bot
+- flexget with inital settings (default config.yml, webui password)
 
 ## Usage
 
@@ -16,8 +17,8 @@ docker run -d \
     -p 3539:3539 \
     -v <path for data files>:/data \
     -v <path for config files>:/config \
-    -e FLEXGET_WEBUI_PASSWORD=<desired password> \
+    -e FG_WEBUI_PASSWD=<desired password> \
     -e PUID=<UID for user> \
     -e PGID=<GID for user> \
-    jimeh/flexget
+    wiserain/flexget
 ```
