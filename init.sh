@@ -5,7 +5,6 @@ set -e
 if [ -n "${TZ}" ]; then
   echo "[Init] Local timezone to ${TZ}"
   echo "${TZ}" > /etc/timezone
-  apk add --no-cache tzdata
   cp /usr/share/zoneinfo/"${TZ}" /etc/localtime
 fi
 
