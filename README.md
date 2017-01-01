@@ -1,6 +1,6 @@
 # docker-flexget
 
-docker container for running [flexget](http://flexget.com/).
+docker container for running [flexget](http://flexget.com/)
 
 container features:
 
