@@ -12,7 +12,7 @@ RUN apk add --no-cache python3 && \
 	rm -r /root/.cache
 
 # install flexget
-RUN apk --no-cache add ca-certificates && \ 
+RUN apk --no-cache add ca-certificates tzdata && \ 
 	pip3 install --upgrade --force-reinstall --ignore-installed \
 		transmissionrpc python-telegram-bot "flexget==${FG_VERSION}" && \
 	rm -r /root/.cache
