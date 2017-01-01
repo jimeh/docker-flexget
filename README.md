@@ -20,5 +20,6 @@ docker run -d \
     -e FG_WEBUI_PASSWD=<desired password> \
     -e PUID=<UID for user> \
     -e PGID=<GID for user> \
+    -e TZ=<timezone> \
     wiserain/flexget
 ```
