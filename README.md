@@ -1,10 +1,10 @@
-# wiserain/docker-flexget
+# docker-flexget
 
 docker container for running [flexget](http://flexget.com/).
 
-container environment:
+container features:
 
-- lightweight alpine linux
+- based on lightweight alpine linux
 - python3
 - transmissionrpc, python-telegram-bot
 - flexget with inital settings (default config.yml, webui password)
