@@ -49,7 +49,7 @@ fi
 # Set FG_WEBUI_PASSWD
 if [[ -z "${FG_WEBUI_PASSWD}" ]]; then
   echo "[Init] Using default FG_WEBUI_PASSWD: flexpass"
-  FG_WEBUI_PASSWD="flexpass"
+  FG_WEBUI_PASSWD="f1exgetp@ss"
 else
   echo "[Init] Using userdefined FG_WEBUI_PASSWD:" \
   "${FG_WEBUI_PASSWD}"
