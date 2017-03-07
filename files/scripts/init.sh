@@ -40,12 +40,11 @@ if [ -f /config/config.yml ]; then
   echo "[Init] Using existing config.yml"
 else
   echo "[Init] New config.yml from template"
-  cp /templates/config.example.yml /config/config.yml
+  cp /scripts/config.example.yml /config/config.yml
   if [ -n "$flex_user" ]; then
     chown "${flex_user}":"${flex_group}" /config/config.yml
   fi
 fi
-rm -rf /templates
 
 # Set FG_WEBUI_PASSWD
 if [[ -z "${FG_WEBUI_PASSWD}" ]]; then

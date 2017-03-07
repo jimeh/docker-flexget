@@ -7,7 +7,7 @@ container features:
 - based on lightweight alpine linux
 - python3
 - transmissionrpc, python-telegram-bot
-- flexget with inital settings (default config.yml, webui password)
+- flexget with initial settings (default config.yml and webui password)
 
 ## Usage
 

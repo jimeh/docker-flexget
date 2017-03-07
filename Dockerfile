@@ -8,8 +8,7 @@ ENV FG_VERSION 2.10.0
 RUN apk add --no-cache python3 && \ 
 	python3 -m ensurepip && \ 
 	rm -r /usr/lib/python*/ensurepip && \ 
-	pip3 install --upgrade pip setuptools && \ 
-	rm -r /root/.cache
+	pip3 install --upgrade pip setuptools
 
 # install flexget
 RUN apk --no-cache add ca-certificates tzdata && \ 
@@ -17,14 +16,8 @@ RUN apk --no-cache add ca-certificates tzdata && \
 		transmissionrpc python-telegram-bot "flexget==${FG_VERSION}" && \
 	rm -r /root/.cache
 
-# add init.sh
-RUN mkdir /scripts
-ADD init.sh /scripts/init.sh
-RUN chmod +x /scripts/init.sh
-
-# add default config.yml
-RUN mkdir /templates
-ADD config.example.yml /templates/
+# copy local files
+COPY files/ /
 
 # add default volumes
 VOLUME /config /data
@@ -34,4 +27,5 @@ WORKDIR /config
 EXPOSE 3539 3539/tcp
 
 # run init.sh to set uid, gid, permissions and to launch flexget
+RUN chmod +x /scripts/init.sh
 CMD ["/scripts/init.sh"]
