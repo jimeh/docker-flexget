@@ -1,13 +1,13 @@
 # docker-flexget
 
-docker container for running [flexget](http://flexget.com/)
+docker container for [flexget](http://flexget.com/)
 
-container features:
+container features are
 
-- based on lightweight alpine linux
+- lightweight alpine linux
 - python3
-- transmissionrpc, python-telegram-bot
 - flexget with initial settings (default config.yml and webui password)
+- built-in plug-ins (transmissionrpc, python-telegram-bot)
 
 ## Usage
 
