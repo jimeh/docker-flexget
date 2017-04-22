@@ -2,7 +2,7 @@ FROM alpine:3.5
 MAINTAINER wiserain
 
 # flexget version
-ARG FG_VERSION 2.10.35
+ARG FG_VERSION="2.10.35"
 
 # install frolvlad/alpine-python3
 RUN apk add --no-cache python3 && \ 
