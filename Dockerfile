@@ -2,16 +2,16 @@ FROM alpine:3.5
 MAINTAINER wiserain
 
 # flexget version
-ARG FG_VERSION="2.10.35"
+ARG FG_VERSION="2.10.43"
 
 # install frolvlad/alpine-python3
-RUN apk add --no-cache python3 && \ 
-	python3 -m ensurepip && \ 
-	rm -r /usr/lib/python*/ensurepip && \ 
+RUN apk add --no-cache python3 && \
+	python3 -m ensurepip && \
+	rm -r /usr/lib/python*/ensurepip && \
 	pip3 install --upgrade pip setuptools
 
 # install flexget
-RUN apk --no-cache add ca-certificates tzdata && \ 
+RUN apk --no-cache add ca-certificates tzdata && \
 	pip3 install --upgrade --force-reinstall --ignore-installed \
 		transmissionrpc python-telegram-bot "flexget==${FG_VERSION}" && \
 	rm -r /root/.cache
