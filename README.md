@@ -1,14 +1,15 @@
 # docker-flexget
 
-docker container for [flexget](http://flexget.com/)
+Docker image for running [flexget](http://flexget.com/)
 
-container features are
+Container features are
 
-- lightweight alpine linux
-- python3
-- flexget with initial settings (default config.yml and webui password)
-- built-in plug-ins (transmissionrpc, python-telegram-bot)
+- Lightweight alpine linux
+- Python 3
+- Flexget with initial settings (default ```config.yml``` and webui password)
+- pre-installed plug-ins (transmissionrpc, python-telegram-bot)
 
+Note that a default password for webui is set to ```f1exgetp@ss```.
 ## Usage
 
 ```
