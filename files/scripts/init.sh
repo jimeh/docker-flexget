@@ -15,15 +15,16 @@ echo "[Init] Setting permissions on files/folders inside container"
 
 if [ -n "${PUID}" ] && [ -n "${PGID}" ]; then
   if [ -z "$(getent group "${PGID}")" ]; then
-    groupadd -g "${PGID}" flexget
+    addgroup -g "${PGID}" flexget
   fi
+  
+  flex_group=$(getent group "${PGID}" | cut -d: -f1)
 
   if [ -z "$(getent passwd "${PUID}")" ]; then
-    useradd -u "${PUID}" -g "${PGID}" flexget
+    adduser -D -H -u "${PUID}" flexget "${flex_group}"
   fi
 
-  flex_user=$(getent passwd "${PUID}" | cut -d: -f1)
-  flex_group=$(getent group "${PGID}" | cut -d: -f1)
+  flex_user=$(getent passwd "${PUID}" | cut -d: -f1)  
 
   chown -R "${flex_user}":"${flex_group}" /config
   chmod -R 775 /config
