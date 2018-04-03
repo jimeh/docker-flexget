@@ -1,9 +1,6 @@
 FROM alpine:3.7
 MAINTAINER wiserain
 
-# flexget version
-ARG FG_VERSION
-
 # install frolvlad/alpine-python3
 RUN apk add --no-cache python3 && \
 	python3 -m ensurepip && \
@@ -13,7 +10,7 @@ RUN apk add --no-cache python3 && \
 # install flexget
 RUN apk --no-cache add ca-certificates tzdata && \
 	pip3 install --upgrade --force-reinstall --ignore-installed \
-		transmissionrpc python-telegram-bot "flexget==${FG_VERSION}" && \
+		transmissionrpc python-telegram-bot flexget && \
 	rm -r /root/.cache
 
 # copy local files
