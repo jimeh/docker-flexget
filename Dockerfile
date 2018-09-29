@@ -11,9 +11,11 @@ RUN apk add --no-cache python3 && \
 	rm -r /root/.cache
 
 # install flexget
-RUN apk --no-cache add ca-certificates tzdata && \
-	pip3 install --upgrade --force-reinstall --ignore-installed \
-		transmissionrpc python-telegram-bot flexget && \
+RUN apk --no-cache add ca-certificates tzdata py3-cryptography && \
+	pip3 install --upgrade \
+		transmissionrpc \
+		python-telegram-bot \
+		flexget && \
 	rm -r /root/.cache
 
 # copy local files
