@@ -9,7 +9,9 @@ Container features are
 - Flexget with initial settings (default ```config.yml``` and webui password)
 - pre-installed plug-ins (transmissionrpc, python-telegram-bot)
 
-Note that a default password for webui is set to ```f1exgetp@ss```.
+~~Note that a default password for webui is set to ```f1exgetp@ss```.~~
+No default password anymore, secure webui using ```FG_WEBUI_PASSWD``` below.
+
 ## Usage
 
 ```

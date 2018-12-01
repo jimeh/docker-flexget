@@ -17,14 +17,14 @@ if [ -n "${PUID}" ] && [ -n "${PGID}" ]; then
   if [ -z "$(getent group "${PGID}")" ]; then
     addgroup -g "${PGID}" flexget
   fi
-  
+
   flex_group=$(getent group "${PGID}" | cut -d: -f1)
 
   if [ -z "$(getent passwd "${PUID}")" ]; then
     adduser -D -H -u "${PUID}" flexget "${flex_group}"
   fi
 
-  flex_user=$(getent passwd "${PUID}" | cut -d: -f1)  
+  flex_user=$(getent passwd "${PUID}" | cut -d: -f1)
 
   chown -R "${flex_user}":"${flex_group}" /config
   chmod -R 775 /config
@@ -48,14 +48,10 @@ else
 fi
 
 # Set FG_WEBUI_PASSWD
-if [[ -z "${FG_WEBUI_PASSWD}" ]]; then
-  echo "[Init] Using default FG_WEBUI_PASSWD: f1exgetp@ss"
-  FG_WEBUI_PASSWD="f1exgetp@ss"
-else
+if [[ ! -z "${FG_WEBUI_PASSWD}" ]]; then
   echo "[Init] Using userdefined FG_WEBUI_PASSWD:" \
-  "${FG_WEBUI_PASSWD}"
+  flexget web passwd "${FG_WEBUI_PASSWD}"
 fi
-flexget web passwd "${FG_WEBUI_PASSWD}"
 
 echo "[Init] Starting flexget daemon"
 if [ -n "$flex_user" ]; then
