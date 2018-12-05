@@ -3,7 +3,7 @@ set -e
 
 # Timezone setting
 if [ -n "${TZ}" ]; then
-  echo "[Init] Local timezone to ${TZ}"
+  echo "$(date '+%Y-%m-%d %H:%m') INIT     Local timezone to ${TZ}"
   echo "${TZ}" > /etc/timezone
   cp /usr/share/zoneinfo/"${TZ}" /etc/localtime
 fi
@@ -11,8 +11,7 @@ fi
 # PUID and PGUID
 cd /config || exit
 
-echo "[Init] Setting permissions on files/folders inside container"
-
+echo "$(date '+%Y-%m-%d %H:%m') INIT     Setting permissions on files/folders inside container"
 if [ -n "${PUID}" ] && [ -n "${PGID}" ]; then
   if [ -z "$(getent group "${PGID}")" ]; then
     groupadd -g "${PGID}" flexget
@@ -31,15 +30,15 @@ fi
 
 # Remove lockfile if exists
 if [ -f /config/.config-lock ]; then
-  echo "[Init] Removing lockfile"
+  echo "$(date '+%Y-%m-%d %H:%m') INIT     Removing lockfile"
   rm -f /config/.config-lock
 fi
 
 # Check if config.yml exists. If not, copy in
 if [ -f /config/config.yml ]; then
-  echo "[Init] Using existing config.yml"
+  echo "$(date '+%Y-%m-%d %H:%m') INIT     Using existing config.yml"
 else
-  echo "[Init] New config.yml from template"
+  echo "$(date '+%Y-%m-%d %H:%m') INIT     New config.yml from template"
   cp /scripts/config.example.yml /config/config.yml
   if [ -n "$flex_user" ]; then
     chown "${flex_user}":"${flex_group}" /config/config.yml
@@ -48,14 +47,15 @@ fi
 
 # Set FG_WEBUI_PASSWD
 if [[ ! -z "${FG_WEBUI_PASSWD}" ]]; then
-  echo "[Init] Using userdefined FG_WEBUI_PASSWD:" \
+  echo "$(date '+%Y-%m-%d %H:%m') INIT     Using userdefined FG_WEBUI_PASSWD: ${FG_WEBUI_PASSWD}"
   flexget web passwd "${FG_WEBUI_PASSWD}"
 fi
 
-echo "[Init] Starting flexget daemon"
+COMMAND="flexget -c /config/config.yml --loglevel info daemon start"
+echo "$(date '+%Y-%m-%d %H:%m') INIT     Starting flexget daemon by"
+echo "$(date '+%Y-%m-%d %H:%m') INIT     ${COMMAND}"
 if [ -n "$flex_user" ]; then
-  exec su "${flex_user}" -m -c \
-  'flexget -c /config/config.yml --loglevel info daemon start'
+  exec su "${flex_user}" -m -c "${COMMAND}"
 else
-  exec flexget -c /config/config.yml --loglevel info daemon start
+  exec "${COMMAND}"
 fi
