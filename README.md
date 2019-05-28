@@ -22,6 +22,7 @@ docker run -d \
     -v <path for data files>:/data \
     -v <path for config files>:/config \
     -e FG_WEBUI_PASSWD=<desired password> \
+    -e FG_LOG_LEVEL=info \
     -e PUID=<UID for user> \
     -e PGID=<GID for user> \
     -e TZ=<timezone> \

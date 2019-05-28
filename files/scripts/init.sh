@@ -51,10 +51,11 @@ if [[ ! -z "${FG_WEBUI_PASSWD}" ]]; then
   flexget web passwd "${FG_WEBUI_PASSWD}"
 fi
 
-echo "$(date '+%Y-%m-%d %H:%m') INIT     Starting flexget daemon"
+echo "$(date '+%Y-%m-%d %H:%m') INIT     Starting flexget daemon by executing"
+flexget_command="flexget -c /config/config.yml --loglevel ${FG_LOG_LEVEL:-info} daemon start --autoreload-config"
+echo "$(date '+%Y-%m-%d %H:%m') INIT     $flexget_command"
 if [ -n "$flex_user" ]; then
-  exec su "${flex_user}" -m -c \
-  'flexget -c /config/config.yml --loglevel info daemon start'
+  exec su "${flex_user}" -m -c "${flexget_command}"
 else
-  exec flexget -c /config/config.yml --loglevel info daemon start
+  exec $flexget_command
 fi
