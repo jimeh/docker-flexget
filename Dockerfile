@@ -61,7 +61,8 @@ RUN \
 	ln -sf /usr/bin/python3 /usr/bin/python && \
 	echo "**** install plugin: misc ****" && \
 	pip install --upgrade \
-		transmissionrpc && \
+		transmissionrpc \
+		deluge_client && \
 	echo "**** install flexget ****" && \
 	pip install --upgrade --force-reinstall \
 		flexget && \
