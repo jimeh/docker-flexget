@@ -64,7 +64,8 @@ RUN \
 	echo "**** install plugin: misc ****" && \
 	pip install --upgrade \
 		transmissionrpc \
-		deluge_client && \
+		deluge_client \
+		irc_bot && \
 	echo "**** install flexget ****" && \
 	pip install --upgrade --force-reinstall \
 		flexget && \
