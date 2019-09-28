@@ -17,7 +17,7 @@ RUN \
 	pip install --upgrade cloudscraper && \
 	apk del --purge --no-cache build-deps && \
 	echo "**** install plugins: convert_magnet ****" && \
-	apk add --no-cache boost-python3 && \
+	apk add --no-cache boost-python3 libstdc++ && \
 	echo "**** install plugin: misc ****" && \
 	pip install --upgrade \
 		transmissionrpc \
