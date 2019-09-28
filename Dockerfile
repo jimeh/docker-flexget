@@ -17,12 +17,7 @@ RUN \
 	pip install --upgrade cloudscraper && \
 	apk del --purge --no-cache build-deps && \
 	echo "**** install plugins: convert_magnet ****" && \
-	apk add --no-cache \
-		--repository http://nl.alpinelinux.org/alpine/edge/main \
-		boost-python3 && \
-	 apk add --no-cache \
-		--repository http://nl.alpinelinux.org/alpine/edge/testing \
-		py3-libtorrent-rasterbar && \
+	apk add --no-cache boost-python3 && \
 	echo "**** install plugin: misc ****" && \
 	pip install --upgrade \
 		transmissionrpc \
@@ -41,6 +36,11 @@ RUN \
 
 # copy local files
 COPY files/ /
+
+# copy libtorrent libs
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/libtorrent-rasterbar.so.10 /usr/lib/
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/python3.7/site-packages/libtorrent*.so /usr/lib/python3.7/site-packages/
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/python3.7/site-packages/python_libtorrent-*.egg-info /usr/lib/python3.7/site-packages/
 
 # add default volumes
 VOLUME /config /data
