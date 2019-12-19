@@ -23,6 +23,10 @@ RUN \
 		transmissionrpc \
 		deluge_client \
 		irc_bot && \
+	echo "**** install plugins: rar ****" && \
+	apk add --no-cache unrar && \
+	pip install --upgrade \
+		rarfile && \
 	echo "**** install flexget ****" && \
 	pip install --upgrade --force-reinstall \
 		flexget && \
