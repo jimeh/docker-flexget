@@ -1,5 +1,5 @@
-FROM alpine:3.10
-MAINTAINER wiserain
+FROM alpine:3.11
+LABEL maintainer "wiserain" 
 
 RUN \
 	echo "**** install frolvlad/alpine-python3 ****" && \
@@ -42,9 +42,17 @@ RUN \
 COPY files/ /
 
 # copy libtorrent libs
-COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/libtorrent-rasterbar.so.10 /usr/lib/
-COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/python3.7/site-packages/libtorrent*.so /usr/lib/python3.7/site-packages/
-COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/python3.7/site-packages/python_libtorrent-*.egg-info /usr/lib/python3.7/site-packages/
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/libtorrent-rasterbar.a /usr/lib/
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/libtorrent-rasterbar.la /usr/lib/
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/libtorrent-rasterbar.so.10.0.0 /usr/lib/
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/python3.8/site-packages/libtorrent.cpython-38-x86_64-linux-gnu.so /usr/lib/python3.8/site-packages/
+COPY --from=emmercm/libtorrent:1.2.2-alpine /usr/lib/python3.8/site-packages/python_libtorrent-1.2.2-py3.8.egg-info /usr/lib/python3.8/site-packages/
+
+# symlink libtorretn libs
+RUN \
+	cd /usr/lib && \
+	ln -s libtorrent-rasterbar.so.10.0.0 libtorrent-rasterbar.so && \
+	ln -s libtorrent-rasterbar.so.10.0.0 libtorrent-rasterbar.so.10
 
 # add default volumes
 VOLUME /config /data
