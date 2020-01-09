@@ -11,6 +11,7 @@ RUN \
 	if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
 	echo "**** install plugin: telegram ****" && \
 	apk add --no-cache py3-cryptography && \
+	pip install --upgrade PySocks && \
 	pip install --upgrade python-telegram-bot && \
 	echo "**** install plugins: cfscraper ****" && \
 	apk add --no-cache --virtual=build-deps g++ gcc python3-dev libffi-dev openssl-dev && \
