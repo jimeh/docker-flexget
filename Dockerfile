@@ -29,8 +29,11 @@ RUN \
 	pip install --upgrade \
 		rarfile && \
 	echo "**** install flexget ****" && \
+	apk add --no-cache --virtual=build-deps gcc libxml2-dev libxslt-dev libc-dev python3-dev && \
 	pip install --upgrade --force-reinstall \
 		flexget && \
+	apk del --purge --no-cache build-deps && \
+	apk add --no-cache libxml2 libxslt && \
 	echo "**** system configurations ****" && \
 	apk --no-cache add shadow tzdata && \
 	sed -i 's/^CREATE_MAIL_SPOOL=yes/CREATE_MAIL_SPOOL=no/' /etc/default/useradd && \
