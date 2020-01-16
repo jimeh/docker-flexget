@@ -22,7 +22,7 @@ RUN \
 	echo "**** install plugin: misc ****" && \
 	pip install --upgrade \
 		transmissionrpc \
-		deluge_client \
+		deluge-client \
 		irc_bot && \
 	echo "**** install plugins: rar ****" && \
 	apk add --no-cache unrar && \
