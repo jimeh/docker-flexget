@@ -26,6 +26,8 @@ if [ -n "${PUID}" ] && [ -n "${PGID}" ]; then
 
   chown -R "${flex_user}":"${flex_group}" /config
   chmod -R 775 /config
+  chown -R "${flex_user}":"${flex_group}" /data
+  chmod -R 775 /data
 fi
 
 # Remove lockfile if exists
