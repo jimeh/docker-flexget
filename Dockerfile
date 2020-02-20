@@ -7,24 +7,24 @@ RUN \
 	python3 -m ensurepip && \
 	rm -r /usr/lib/python*/ensurepip && \
 	pip3 install --upgrade pip setuptools && \
-	if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
+	if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip; fi && \
 	if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
-	echo "**** install plugin: telegram ****" && \
+	echo "**** install dependencies for plugin: telegram ****" && \
 	apk add --no-cache py3-cryptography && \
 	pip install --upgrade PySocks && \
 	pip install --upgrade python-telegram-bot && \
-	echo "**** install plugins: cfscraper ****" && \
+	echo "**** install dependencies for plugin: cfscraper ****" && \
 	apk add --no-cache --virtual=build-deps g++ gcc python3-dev libffi-dev openssl-dev && \
 	pip install --upgrade cloudscraper && \
 	apk del --purge --no-cache build-deps && \
-	echo "**** install plugins: convert_magnet ****" && \
+	echo "**** install dependencies for plugin: convert_magnet ****" && \
 	apk add --no-cache boost-python3 libstdc++ && \
-	echo "**** install plugin: misc ****" && \
+	echo "**** install dependencies for plugin: misc ****" && \
 	pip install --upgrade \
 		transmissionrpc \
 		deluge-client \
 		irc_bot && \
-	echo "**** install plugins: rar ****" && \
+	echo "**** install dependencies for plugin: rar ****" && \
 	apk add --no-cache unrar && \
 	pip install --upgrade \
 		rarfile && \
