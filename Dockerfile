@@ -33,7 +33,7 @@ RUN \
 	pip install --upgrade --force-reinstall \
 		flexget && \
 	apk del --purge --no-cache build-deps && \
-	apk add --no-cache libxml2 libxslt && \
+	apk add --no-cache libxml2 libxslt jpeg && \
 	echo "**** system configurations ****" && \
 	apk --no-cache add shadow tzdata && \
 	sed -i 's/^CREATE_MAIL_SPOOL=yes/CREATE_MAIL_SPOOL=no/' /etc/default/useradd && \
