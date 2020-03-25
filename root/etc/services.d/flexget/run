@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+
+command="
+flexget
+-c /config/config.yml
+--loglevel ${FG_LOG_LEVEL:-info}
+daemon start --autoreload-config
+"
+
+echo "[services.d] executing => $(echo $command)"
+
+exec \
+	s6-setuidgid abc $command

@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM lsiobase/alpine:3.11
 LABEL maintainer "wiserain" 
 
 RUN \
@@ -11,39 +11,35 @@ RUN \
 	if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip; fi && \
 	echo "**** install dependencies for plugin: telegram ****" && \
 	apk add --no-cache py3-cryptography && \
-	pip install --upgrade PySocks && \
-	pip install --upgrade python-telegram-bot && \
+	pip install --upgrade python-telegram-bot PySocks && \
 	echo "**** install dependencies for plugin: cfscraper ****" && \
 	apk add --no-cache --virtual=build-deps g++ gcc python3-dev libffi-dev openssl-dev && \
 	pip install --upgrade cloudscraper && \
 	apk del --purge --no-cache build-deps && \
 	echo "**** install dependencies for plugin: convert_magnet ****" && \
 	apk add --no-cache boost-python3 libstdc++ && \
+	echo "**** install dependencies for plugin: decompress ****" && \
+	apk add --no-cache unrar && \
+	pip install --upgrade \
+		rarfile && \
 	echo "**** install dependencies for plugin: misc ****" && \
 	pip install --upgrade \
 		transmissionrpc \
 		deluge-client \
 		irc_bot && \
-	echo "**** install dependencies for plugin: rar ****" && \
-	apk add --no-cache unrar && \
-	pip install --upgrade \
-		rarfile && \
 	echo "**** install flexget ****" && \
 	apk add --no-cache --virtual=build-deps gcc libxml2-dev libxslt-dev libc-dev python3-dev jpeg-dev && \
 	pip install --upgrade --force-reinstall \
+		packaging \
 		flexget && \
 	apk del --purge --no-cache build-deps && \
 	apk add --no-cache libxml2 libxslt jpeg && \
 	echo "**** system configurations ****" && \
-	apk --no-cache add shadow tzdata && \
-	sed -i 's/^CREATE_MAIL_SPOOL=yes/CREATE_MAIL_SPOOL=no/' /etc/default/useradd && \
+	apk --no-cache add bash bash-completion tzdata && \
 	echo "**** cleanup ****" && \
 	rm -rf \
 		/tmp/* \
 		/root/.cache
-
-# copy local files
-COPY files/ /
 
 # copy libtorrent libs
 COPY --from=emmercm/libtorrent:1.2.5-alpine /usr/lib/libtorrent-rasterbar.a /usr/lib/
@@ -58,13 +54,12 @@ RUN \
 	ln -s libtorrent-rasterbar.so.10.0.0 libtorrent-rasterbar.so && \
 	ln -s libtorrent-rasterbar.so.10.0.0 libtorrent-rasterbar.so.10
 
+# copy local files
+COPY root/ /
+
 # add default volumes
 VOLUME /config /data
 WORKDIR /config
 
 # expose port for flexget webui
 EXPOSE 3539 3539/tcp
-
-# run init.sh to set uid, gid, permissions and to launch flexget
-RUN chmod +x /scripts/init.sh
-CMD ["/scripts/init.sh"]
