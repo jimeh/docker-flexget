@@ -35,7 +35,7 @@ Most importantly, secure webui using ```FG_WEBUI_PASSWD```.
 
 ### Additional packages
 
-If there's something you want to install, create bash script with any name under ```/config/custom-cont-init.d```, for example,
+If there are additional packages you may want to install, create bash script with any name under ```/config/custom-cont-init.d```, for example,
 ```bash
 #!/usr/bin/with-contenv bash
 apk add -q --no-cache <alpine pkgs>
@@ -43,3 +43,9 @@ pip install <python pkgs>
 ```
 
 Then, it will run every container start.
+
+### Custom plugins
+
+You can install custom plugins by ```FG_PLUGINS="{plugin_name_1} {plugin_name_2}"``` whose value is a space-separated list of plugin names. Current available ones are
+
+- ```write_magnet```: Mostly same as built-in ```convert_magnet``` but expect better performance and improved error handling, which is compatible with a version of libtorrent containerized in this image.

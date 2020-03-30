@@ -14,6 +14,27 @@ mkdir -p \
   { echo "Using existing config.yml"; } || \
 	{ echo "New config.yml from template"; cp /defaults/config.example.yml /config/config.yml; }
 
+# install custom plugins
+if [[ ! -z "${FG_PLUGINS}" ]]; then
+  mkdir -p /config/plugins
+  for plugin_name in ${FG_PLUGINS}; do
+    plugin_src="/defaults/plugins/${plugin_name}.py"
+    plugin_trg="/config/plugins/${plugin_name}.py"
+    plugin_log="Installing plugin: '${plugin_name}'"
+    if [[ -f "${plugin_src}" ]]; then
+      if  [[ ! -f "${plugin_trg}" ]]; then
+        cp "${plugin_src}" "${plugin_trg}" >/dev/null 2>&1 && \
+          echo "${plugin_log} - successful" || \
+          echo "${plugin_log} - copy failed"
+      else
+        echo "${plugin_log} - already exists. skipping ..."
+      fi
+    else
+      echo "${plugin_log} - no such plugin available"
+    fi
+  done
+fi
+
 # set FG_WEBUI_PASSWD
 if [[ ! -z "${FG_WEBUI_PASSWD}" ]]; then
   echo "Setting flexget web password to '${FG_WEBUI_PASSWD}'"
