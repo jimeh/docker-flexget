@@ -1,8 +1,13 @@
-FROM lsiobase/alpine:3.11
-LABEL maintainer "wiserain" 
+ARG ALPINE_VER
+ARG FLEXGET_VER
+ARG LIBTORRENT_VER
+
+FROM wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER} AS libtorrent
+FROM lsiobase/alpine:${ALPINE_VER}
+LABEL maintainer "wiserain"
 
 RUN \
-	echo "**** install frolvlad/alpine-python3 ****" && \
+    echo "**** install frolvlad/alpine-python3 ****" && \
 	apk add --no-cache python3 && \
 	if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
 	python3 -m ensurepip && \
@@ -30,7 +35,7 @@ RUN \
 	echo "**** install flexget ****" && \
 	apk add --no-cache --virtual=build-deps gcc libxml2-dev libxslt-dev libc-dev python3-dev jpeg-dev && \
 	pip install --upgrade --force-reinstall \
-		flexget && \
+		flexget==${FLEXGET_VER} && \
 	apk del --purge --no-cache build-deps && \
 	apk add --no-cache libxml2 libxslt jpeg && \
 	echo "**** system configurations ****" && \
@@ -41,17 +46,7 @@ RUN \
 		/root/.cache
 
 # copy libtorrent libs
-COPY --from=emmercm/libtorrent:1.2.6-alpine /usr/lib/libtorrent-rasterbar.a /usr/lib/
-COPY --from=emmercm/libtorrent:1.2.6-alpine /usr/lib/libtorrent-rasterbar.la /usr/lib/
-COPY --from=emmercm/libtorrent:1.2.6-alpine /usr/lib/libtorrent-rasterbar.so.10.0.0 /usr/lib/
-COPY --from=emmercm/libtorrent:1.2.6-alpine /usr/lib/python3.8/site-packages/libtorrent.cpython-38-x86_64-linux-gnu.so /usr/lib/python3.8/site-packages/
-COPY --from=emmercm/libtorrent:1.2.6-alpine /usr/lib/python3.8/site-packages/python_libtorrent-1.2.6-py3.8.egg-info /usr/lib/python3.8/site-packages/
-
-# symlink libtorretn libs
-RUN \
-	cd /usr/lib && \
-	ln -s libtorrent-rasterbar.so.10.0.0 libtorrent-rasterbar.so && \
-	ln -s libtorrent-rasterbar.so.10.0.0 libtorrent-rasterbar.so.10
+COPY --from=libtorrent /libtorrent-py3/usr/lib/ /usr/lib/
 
 # copy local files
 COPY root/ /
