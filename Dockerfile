@@ -1,10 +1,11 @@
 ARG ALPINE_VER
-ARG FLEXGET_VER
 ARG LIBTORRENT_VER
 
 FROM wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER} AS libtorrent
 FROM lsiobase/alpine:${ALPINE_VER}
 LABEL maintainer "wiserain"
+
+ARG FLEXGET_VER
 
 RUN \
     echo "**** install frolvlad/alpine-python3 ****" && \
