@@ -58,4 +58,4 @@ VOLUME /config /data
 WORKDIR /config
 
 # expose port for flexget webui
-EXPOSE 3539 3539/tcp
+EXPOSE 5050 5050/tcp
