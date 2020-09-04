@@ -57,5 +57,7 @@ COPY root/ /
 VOLUME /config /data
 WORKDIR /config
 
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "cd /config && if [[ $(flexget daemon status | tail -n1 | grep running | wc -l) == "1" ]]; then exit 0; else exit 1; fi" ]
+
 # expose port for flexget webui
 EXPOSE 5050 5050/tcp
