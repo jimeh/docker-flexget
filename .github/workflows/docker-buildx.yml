@@ -20,6 +20,7 @@ jobs:
         id: vars
         run: |
           echo ::set-output name=flexget_ver::$(pip3 search flexget | grep FlexGet | awk '{print $2}' | tr -d '()')
+          echo ::set-output name=github_desc::$(curl -sX GET https://api.github.com/repos/wiserain/docker-flexget | jq -r .description)
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -44,7 +45,7 @@ jobs:
         with:
           destination_container_repo: ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_REPO }}
           provider: dockerhub
-          short_description: 'Docker container for running Flexget '
+          short_description: ${{ steps.vars.outputs.github_desc }}
           readme_file: 'README.md'
       -
         name: Send Notification
