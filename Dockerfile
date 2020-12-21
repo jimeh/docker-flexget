@@ -5,6 +5,8 @@ FROM wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER}-py3 AS libtorrent
 FROM lsiobase/alpine:${ALPINE_VER}
 LABEL maintainer "wiserain"
 
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+
 RUN \
     echo "**** install frolvlad/alpine-python3 ****" && \
 	apk add --no-cache python3 && \
