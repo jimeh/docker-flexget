@@ -2,7 +2,7 @@ ARG ALPINE_VER=3.12
 ARG LIBTORRENT_VER=2.0.0
 
 FROM wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER}-py3 AS libtorrent
-FROM lsiobase/alpine:${ALPINE_VER}
+FROM ghcr.io/linuxserver/baseimage-alpine:${ALPINE_VER}
 LABEL maintainer "wiserain"
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
