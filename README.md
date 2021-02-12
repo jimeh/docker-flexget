@@ -24,6 +24,7 @@ docker run -d \
     -v <path for config files>:/config \
     -e FG_WEBUI_PASSWD=<desired password> \
     -e FG_LOG_LEVEL=info \
+    -e FG_LOG_FILE=flexget.log \
     -e PUID=<UID for user> \
     -e PGID=<GID for user> \
     -e TZ=<timezone> \
