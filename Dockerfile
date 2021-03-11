@@ -1,9 +1,10 @@
 ARG ALPINE_VER=3.13
 ARG LIBTORRENT_VER=latest
 
-FROM wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER}-py3 AS libtorrent
+FROM ghcr.io/wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER}-py3 AS libtorrent
 FROM ghcr.io/linuxserver/baseimage-alpine:${ALPINE_VER}
-LABEL maintainer "wiserain"
+LABEL maintainer="wiserain"
+LABEL org.opencontainers.image.source https://github.com/wiserain/docker-flexget
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
@@ -56,8 +57,6 @@ COPY root/ /
 # add default volumes
 VOLUME /config /data
 WORKDIR /config
-
-# HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "cd /config && if [[ $(flexget daemon status | tail -n1 | grep running | wc -l) == "1" ]]; then exit 0; else exit 1; fi" ]
 
 # expose port for flexget webui
 EXPOSE 5050 5050/tcp
