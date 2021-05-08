@@ -6,7 +6,12 @@ FROM ghcr.io/linuxserver/baseimage-alpine:${ALPINE_VER}
 LABEL maintainer="wiserain"
 LABEL org.opencontainers.image.source https://github.com/wiserain/docker-flexget
 
-ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1
+
+COPY requirements.txt /defaults/
 
 RUN \
     echo "**** install frolvlad/alpine-python3 ****" && \
@@ -16,33 +21,32 @@ RUN \
 	rm -r /usr/lib/python*/ensurepip && \
 	pip3 install --no-cache --upgrade pip setuptools wheel && \
 	if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip; fi && \
-	echo "**** install dependencies for plugin: telegram ****" && \
-	apk add --no-cache --virtual=build-deps gcc python3-dev libffi-dev musl-dev openssl-dev && \
-	pip install --upgrade python-telegram-bot==12.8 "cryptography<3.4" PySocks && \
-	echo "**** install dependencies for plugin: cfscraper ****" && \
-	apk add --no-cache --virtual=build-deps g++ gcc python3-dev libffi-dev openssl-dev && \
-	pip install --upgrade cloudscraper && \
-	echo "**** install dependencies for plugin: convert_magnet ****" && \
-	apk add --no-cache boost-python3 libstdc++ && \
-	echo "**** install dependencies for plugin: decompress ****" && \
-	apk add --no-cache unrar && \
-	pip install --upgrade \
-		rarfile && \
-	echo "**** install dependencies for plugin: transmission-rpc ****" && \
-	apk add --no-cache --virtual=build-deps build-base python3-dev && \
-	pip install --upgrade transmission-rpc && \
-	echo "**** install dependencies for plugin: misc ****" && \
-	pip install --upgrade \
-		deluge-client \
-		irc_bot && \
-	echo "**** install flexget ****" && \
-	apk add --no-cache --virtual=build-deps gcc libxml2-dev libxslt-dev libc-dev python3-dev jpeg-dev g++ && \
-	pip install --upgrade --force-reinstall \
-		flexget && \
+	echo "**** install build dependencies ****" && \
+	apk add --no-cache --virtual=build-deps \
+		build-base \
+		python3-dev \
+		musl-dev \
+		libffi-dev \
+		openssl-dev \
+		libxml2-dev \
+		libxslt-dev \
+		libc-dev \
+		jpeg-dev \
+		linux-headers && \
+	pip install -r /defaults/requirements.txt && \
 	apk del --purge --no-cache build-deps && \
-	apk add --no-cache libxml2 libxslt jpeg && \
-	echo "**** system configurations ****" && \
-	apk --no-cache add bash bash-completion tzdata && \
+	echo "**** install runtime dependencies ****" && \
+	apk add --no-cache \
+		`# libtorrent` \
+		boost-python3 libstdc++ \
+		`# rarfile` \
+		unrar \
+		`# lxml` \
+		libxml2 libxslt \
+		`# others` \
+		jpeg \
+		`#system` \
+		bash bash-completion tzdata && \
 	echo "**** cleanup ****" && \
 	rm -rf \
 		/tmp/* \

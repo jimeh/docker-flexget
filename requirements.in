@@ -1,0 +1,14 @@
+
+python-telegram-bot==12.8
+cryptography<3.4
+PySocks
+    # plugin: temegram
+cloudscraper
+    # plugin: cfscraper
+rarfile
+    # plugin: decompress
+transmission-rpc
+deluge-client
+irc_bot
+    # plugin: others
+flexget
