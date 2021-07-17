@@ -1,14 +1,13 @@
-
 python-telegram-bot==12.8
 cryptography<3.4
 PySocks
-    # plugin: temegram
+    # plugin: telegram
 cloudscraper
     # plugin: cfscraper
 rarfile
     # plugin: decompress
 transmission-rpc
 deluge-client
-irc_bot
+irc-bot<1.0.40
     # plugin: others
 flexget
