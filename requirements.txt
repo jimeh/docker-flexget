@@ -4,6 +4,8 @@
 #
 #    pip-compile
 #
+aiocontextvars==0.2.2
+    # via flexget
 aniso8601==9.0.1
     # via
     #   flask-restful
@@ -32,7 +34,7 @@ certifi==2020.12.5
     #   requests
 cffi==1.14.6
     # via cryptography
-chardet==4.0.0
+charset-normalizer==2.0.3
     # via
     #   flexget
     #   requests
@@ -40,7 +42,7 @@ cheroot==8.5.2
     # via
     #   cherrypy
     #   flexget
-cherrypy==18.6.0
+cherrypy==18.6.1
     # via flexget
 click==7.1.2
     # via
@@ -51,6 +53,8 @@ cloudscraper==1.2.58
 colorama==0.4.4
     # via flexget
 colorclass==2.2.0
+    # via flexget
+contextvars==2.4
     # via flexget
 cryptography==3.3.2
     # via
@@ -78,9 +82,9 @@ flask-login==0.5.0
     # via flexget
 flask-restful==0.3.9
     # via flexget
-flask-restx==0.4.0
+flask-restx==0.5.0
     # via flexget
-flexget==3.1.134
+flexget==3.1.135
     # via -r requirements.in
 future==0.18.2
     # via irc-bot
@@ -96,7 +100,13 @@ idna==2.10
     # via
     #   flexget
     #   requests
-importlib-metadata==4.6.0
+immutables==0.15
+    # via
+    #   contextvars
+    #   flexget
+importlib-metadata==4.6.3
+    # via flexget
+importlib-resources==5.2.2
     # via flexget
 irc-bot==1.0.35
     # via -r requirements.in
@@ -171,7 +181,7 @@ pyrss2gen==1.1
     # via flexget
 pysocks==1.7.1
     # via -r requirements.in
-python-dateutil==2.8.1
+python-dateutil==2.8.2
     # via
     #   flexget
     #   guessit
@@ -193,7 +203,7 @@ rebulk==3.0.1
     # via
     #   flexget
     #   guessit
-requests==2.25.1
+requests==2.26.0
     # via
     #   cloudscraper
     #   flexget
@@ -224,7 +234,7 @@ soupsieve==2.2.1
     # via
     #   beautifulsoup4
     #   flexget
-sqlalchemy==1.4.20
+sqlalchemy==1.4.22
     # via flexget
 tempora==4.0.2
     # via
@@ -261,10 +271,11 @@ zc.lockfile==2.0
     # via
     #   cherrypy
     #   flexget
-zipp==3.4.1
+zipp==3.5.0
     # via
     #   flexget
     #   importlib-metadata
+    #   importlib-resources
 zxcvbn-python==4.4.24
     # via flexget
 
