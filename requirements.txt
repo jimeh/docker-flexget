@@ -60,7 +60,7 @@ cryptography==3.3.2
     # via
     #   -r requirements.in
     #   python-telegram-bot
-decorator==5.0.9
+decorator==5.1.0
     # via python-telegram-bot
 deluge-client==1.9.0
     # via -r requirements.in
