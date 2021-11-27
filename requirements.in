@@ -8,6 +8,6 @@ rarfile
     # plugin: decompress
 transmission-rpc
 deluge-client
-irc-bot<1.0.40
+irc-bot
     # plugin: others
 flexget
