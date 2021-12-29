@@ -2,7 +2,18 @@ ARG ALPINE_VER=3.14
 ARG LIBTORRENT_VER=latest
 
 FROM ghcr.io/wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER} AS libtorrent
-FROM ghcr.io/linuxserver/baseimage-alpine:${ALPINE_VER}
+FROM ghcr.io/linuxserver/baseimage-alpine:${ALPINE_VER} AS base
+FROM base AS builder
+
+# copy libtorrent libs
+COPY --from=libtorrent /libtorrent-build/usr/lib/ /bar/usr/lib/
+
+# copy local files
+COPY root/ /bar/
+COPY requirements.txt /bar/defaults/
+
+
+FROM base
 LABEL maintainer="wiserain"
 LABEL org.opencontainers.image.source https://github.com/wiserain/docker-flexget
 
@@ -11,7 +22,7 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1
 
-COPY requirements.txt /defaults/
+COPY --from=builder /bar/ /
 
 RUN \
     echo "**** install frolvlad/alpine-python3 ****" && \
@@ -51,12 +62,6 @@ RUN \
 	rm -rf \
 		/tmp/* \
 		/root/.cache
-
-# copy libtorrent libs
-COPY --from=libtorrent /libtorrent-build/usr/lib/ /usr/lib/
-
-# copy local files
-COPY root/ /
 
 # add default volumes
 VOLUME /config /data
