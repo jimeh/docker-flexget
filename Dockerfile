@@ -1,4 +1,4 @@
-ARG ALPINE_VER=3.14
+ARG ALPINE_VER
 ARG LIBTORRENT_VER=latest
 
 FROM ghcr.io/wiserain/libtorrent:${LIBTORRENT_VER}-alpine${ALPINE_VER} AS libtorrent
