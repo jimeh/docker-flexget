@@ -20,7 +20,9 @@ LABEL org.opencontainers.image.source https://github.com/wiserain/docker-flexget
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+	FIX_DIR_OWNERSHIP_CONFIG=1 \
+	FIX_DIR_OWNERSHIP_DATA=1
 
 COPY --from=builder /bar/ /
 
@@ -57,7 +59,7 @@ RUN \
 		`# others` \
 		jpeg \
 		`#system` \
-		bash bash-completion tzdata && \
+		bash bash-completion findutils tzdata && \
 	echo "**** cleanup ****" && \
 	rm -rf \
 		/tmp/* \

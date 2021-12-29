@@ -44,10 +44,13 @@ if [[ ! -z "${FG_WEBUI_PASSWD}" ]]; then
 fi
 
 # permissions
-chown -R abc:abc /config
-chown abc:abc /data
-chmod 775 \
-	/config \
-	/data
+if [ "${FIX_DIR_OWNERSHIP_CONFIG}" = "1" ] || [ "${FIX_DIR_OWNERSHIP_CONFIG}" = "true" ]; then
+  find /config \! \( -uid $(id -u abc) -gid $(id -g abc) \) -print0 | \
+    xargs -0 --no-run-if-empty chown -h abc:abc
+fi
+if [ "${FIX_DIR_OWNERSHIP_DATA}" = "1" ] || [ "${FIX_DIR_OWNERSHIP_DATA}" = "true" ]; then
+  find /data \! \( -uid $(id -u abc) -gid $(id -g abc) \) -print0 | \
+    xargs -0 --no-run-if-empty chown -h abc:abc
+fi
 
 echo "Flexget v$(flexget -V | sed -n 1p) ready!"
