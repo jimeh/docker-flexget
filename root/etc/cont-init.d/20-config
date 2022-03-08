@@ -7,7 +7,7 @@ find /config -name ".config-lock" -exec rm -f {} \;
 if [[ -f /config/config.yml ]]; then
   echo "*** Using existing config.yml"
 else
-	echo "*** New config.yml from template"
+  echo "*** New config.yml from template"
   cp /defaults/config.example.yml /config/config.yml
 fi
 

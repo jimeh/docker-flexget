@@ -185,9 +185,9 @@ jobs:
           file: Dockerfile
           tags: |
             ${{ env.IMAGE_NAME }}:testing
-            ${{ env.IMAGE_NAME }}:testing-pr-${{ github.event.pull_request.number }}
+            ${{ env.IMAGE_NAME }}:testing-${{ github.event.pull_request.number }}
             ghcr.io/${{ env.IMAGE_NAME }}:testing
-            ghcr.io/${{ env.IMAGE_NAME }}:testing-pr-${{ github.event.pull_request.number }}
+            ghcr.io/${{ env.IMAGE_NAME }}:testing-${{ github.event.pull_request.number }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           build-args: |
             ALPINE_VER=${{ env.ALPINE_VER }}
@@ -201,9 +201,9 @@ jobs:
           status: ${{ job.status }}
           description: |
             ${{ env.IMAGE_NAME }}:testing
-            ${{ env.IMAGE_NAME }}:testing-pr-${{ github.event.pull_request.number }}
+            ${{ env.IMAGE_NAME }}:testing-${{ github.event.pull_request.number }}
             ghcr.io/${{ env.IMAGE_NAME }}:testing
-            ghcr.io/${{ env.IMAGE_NAME }}:testing-pr-${{ github.event.pull_request.number }}
+            ghcr.io/${{ env.IMAGE_NAME }}:testing-${{ github.event.pull_request.number }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         if: failure()

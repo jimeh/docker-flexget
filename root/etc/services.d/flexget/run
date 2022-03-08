@@ -11,4 +11,4 @@ daemon start --autoreload-config
 echo "[services.d] executing => $(echo $command)"
 
 exec \
-	s6-setuidgid abc $command
+    s6-setuidgid abc $command
