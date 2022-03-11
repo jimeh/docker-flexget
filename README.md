@@ -21,15 +21,14 @@ Container features are
 ```bash
 docker run -d \
     --name=<container name> \
+    --restart on-failure:5 \
     -p 5050:5050 \
     -v <path for data files>:/data \
     -v <path for config files>:/config \
-    -e FG_WEBUI_PASSWD=<desired password> \
-    -e FG_LOG_LEVEL=info \
-    -e FG_LOG_FILE=flexget.log \
     -e PUID=<UID for user> \
     -e PGID=<GID for user> \
     -e TZ=<timezone> \
+    -e FG_WEBUI_PASSWD=<desired password> \
     wiserain/flexget
 ```
 ### docker-compose
@@ -40,21 +39,31 @@ services:
   flexget:
     image: wiserain/flexget
     container_name: <container name>
-    environment:
-      - FG_WEBUI_PASSWD=<desired password>
-      - FG_LOG_LEVEL=info
-      - FG_LOG_FILE=flexget.log
-      - PUID=<UID for user>
-      - PGID=<GID for user>
+    restart: on-failure:5 
     ports :
       - 5050:5050
     volumes:
       - <path for data files>:/data
       - <path for config files>:/config
-    restart: on-failure:5 
+    environment:
+      - PUID=<UID for user>
+      - PGID=<GID for user>
+      - TZ=<timezone>
+      - FG_WEBUI_PASSWD=<desired password>
  ```
 
 Most importantly, secure webui using ```FG_WEBUI_PASSWD```.
+
+## Environment variables
+
+| ENV  | Description  | Default  |
+|---|---|---|
+| ```PUID``` / ```PGID```  | uid and gid for running an app  | ```911``` / ```911```  |
+| ```TZ```  | timezone  |  |
+| ```FG_WEBUI_PASSWD```  | use a strong password |  |
+| ```FG_LOG_LEVEL```  | log level | ```info``` |
+| ```FG_LOG_FILE```  | log file name | ```flexget.log``` |
+| ```FG_PLUGINS```  | see below |  |
 
 ### Additional packages
 
