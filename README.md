@@ -64,6 +64,8 @@ Most importantly, secure webui using ```FG_WEBUI_PASSWD```.
 | ```FG_LOG_LEVEL```  | log level | ```info``` |
 | ```FG_LOG_FILE```  | log file name | ```flexget.log``` |
 | ```FG_PLUGINS```  | see below |  |
+| ```FIX_DIR_OWNERSHIP_CONFIG``` | set something other than `1` or `true` to skip applying chown for dir `/config` | `1` |
+| ```FIX_DIR_OWNERSHIP_DATA``` | set something other than `1` or `true` to skip applying chown for dir `/data` | `1` |
 
 ### Additional packages
 
