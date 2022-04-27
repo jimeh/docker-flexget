@@ -20,6 +20,19 @@ RUN \
 # 
 # BUILD
 # 
+FROM jlesage/alpine-abuild:${ALPINE_VER} AS unrar
+
+ARG ALPINE_VER
+
+RUN \
+    git clone https://git.alpinelinux.org/aports /tmp/aports -b ${ALPINE_VER}-stable --depth=1 && \
+    PKG_SRC_DIR=/tmp/aports/non-free/unrar && \
+    PKG_DST_DIR=/unrar-build && \
+    mkdir "$PKG_DST_DIR" && \
+    /bin/start-build -r && \
+    tar xf /unrar-build/unrar-[0-9]*.apk -C /unrar-build
+
+
 FROM base AS builder
 
 COPY requirements.txt /tmp/
@@ -41,6 +54,9 @@ RUN \
 
 # copy libtorrent libs
 COPY --from=libtorrent /libtorrent-build/usr/lib/ /bar/usr/lib/
+
+# copy unrar
+COPY --from=unrar /unrar-build/usr/ /bar/usr/
 
 # copy local files
 COPY root/ /bar/
@@ -67,8 +83,6 @@ RUN \
     apk add --no-cache \
         `# libtorrent` \
         boost-python3 libstdc++ \
-        `# rarfile` \
-        unrar \
         `# lxml` \
         libxml2 libxslt \
         `# others` \
